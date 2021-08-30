@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-3.2.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+
+    <!-- 开启对SpringMVC注解的支持 -->
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <!--自定义注解-->
+            <bean class="com.yxx.ticketing.web.converter.LoginUserMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+
+    <!-- 扫描web的注解-->
+    <context:component-scan base-package="com.yxx.ticketing.web" use-default-filters="false">
+
+        <!--配置全局异常统一响应处理器-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!-- 配置视图解析器
+        使用freemarker代替jsp
+        -->
+    <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--&lt;!&ndash; JSP文件所在的目录 &ndash;&gt;-->
+        <!--<property name="prefix" value="/WEB-INF/pages/" />-->
+        <!--&lt;!&ndash; 文件的后缀名 &ndash;&gt;-->
+        <!--<property name="suffix" value=".jsp" />-->
+    <!--</bean>-->
+    <!--视图解析器/-->
+    <!--freemarker视图解析器-->
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/pages/"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="contentType" value="text/html;charset=utf-8"/>
+        <property name="suffix" value=".ftl"/>
+        <property name="exposeRequestAttributes" value="true" />
+        <property name="exposeSessionAttributes" value="true" />
+        <property name="exposeSpringMacroHelpers" value="true" />
+        <property name="requestContextAttribute" value="request" />
+        <property name="cache" value="true" />
+        <property name="order" value="0" />
+    </bean>
+
+
+
+    <!--配置json数据解析-->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <!--配置json转换器-->
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <property name="serializationInclusion">
+                            <!--设置null的属性不参与json转换-->
+                            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+    <!--json数据解析/-->
+
+    <!-- 设置静态资源不过滤 -->
+    <mvc:resources location="/res/css/" mapping="/res/css/**" />
+    <mvc:resources location="/res/img/" mapping="/res/img/**" />
+    <mvc:resources location="/res/js/" mapping="/res/js/**" />
+    <mvc:resources location="/res/fonts/" mapping="/res/fonts/**" />
+
+
+
+    <!--配置拦截器-->
+    <!--<mvc:interceptors>-->
+        <!--&lt;!&ndash;登录拦截器&ndash;&gt;-->
+        <!--<mvc:interceptor>-->
+            <!--&lt;!&ndash;拦截请求&ndash;&gt;-->
+            <!--<mvc:mapping path="/course/add"/>-->
+            <!--<bean class="com.jluzh10.learning.web.interceptor.LoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+
+    <!--</mvc:interceptors>-->
+
+
+    <!--
+        支持AOP的注解支持，AOP底层使用代理技术
+        JDK动态代理，要求必须有接口
+        cglib代理，生成子类对象，proxy-target-class="true" 默认使用cglib的方式
+    -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+</beans>

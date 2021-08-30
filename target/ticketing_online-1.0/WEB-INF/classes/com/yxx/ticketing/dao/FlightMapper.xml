@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxx.ticketing.dao.FlightMapper">
+
+    <sql id="BaseColumn">
+        id, num, state, sTime, eTime
+    </sql>
+
+    <select id="getOneFlight" resultType="com.yxx.ticketing.model.Flight">
+        select
+            <include refid="BaseColumn"></include>
+            from t_flight where id=#{fid}
+    </select>
+
+</mapper>

@@ -1,0 +1,358 @@
+﻿@charset 'utf-8';
+
+.com-header {
+    width: 100%;
+    min-width: 1190px;
+    background: #fff;
+    border-top: 1px solid #dcdcdc;
+}
+.com-header .com-wrap {
+    width: 1190px;
+    margin: 0 auto;
+    height: 64px;
+}
+.com-logo {
+    float: left;
+    display: inline-block;
+    margin-top: 17px;
+}
+.com-logo img {
+    width: 206px;
+    height: 34px;
+}
+.com-header .my-trip {
+    float: right;
+    width: 151px;
+    font-size: 14px;
+    margin-top: 12px;
+    border: 1px solid #fff;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.com-header .my-trip.my-trip-hover {
+    border-color: #ddd;
+}
+.com-header .my-trip a {
+    display: block;
+    width: 100%;
+    height: 44px;
+    color: #333;
+    z-index: 12;
+    zoom: 1;
+}
+
+.com-header .my-trip.my-trip-hover a {
+    color: #f18d00;
+}
+
+.com-header .my-trip .my-trip-img-box {
+    width: 36px;
+    height: 36px;
+    float: left;
+    margin-top: 4px;
+    margin-left: 10px;
+    margin-right: 12px;
+}
+.com-header .my-trip .my-trip-img-box img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+.com-header .my-trip .my-trip-text {
+    float: left;
+    line-height: 44px;
+}
+.com-header .my-trip .my-trip-arrow {
+    width: 10px;
+    height: 6px;
+    background: url(../img/header-icon-arrow.png) 0 0 no-repeat;
+    float: right;
+    margin-top: 18px;
+    margin-right: 10px;
+}
+
+.com-header .my-trip .my-trip-dropdown {
+    position: relative;
+    z-index: 102;
+    zoom: 1;
+    visibility: hidden;
+    -webkit-animation: MyTripMenuHide .2s;
+    -moz-animation: MyTripMenuHide .2s;
+    -ms-animation: MyTripMenuHide .2s;
+    -o-animation: MyTripMenuHide .2s;
+    animation: MyTripMenuHide .2s;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -webkit-animation-fill-mode: both;
+    -ms-animation-fill-mode: both;
+    -moz-animation-fill-mode: both;
+    -o-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.com-header .my-trip.my-trip-hover .my-trip-dropdown {
+    visibility: visible;
+    -webkit-animation: MyTripMenuShow .2s;
+    -moz-animation: MyTripMenuShow .2s;
+    -ms-animation: MyTripMenuShow .2s;
+    -o-animation: MyTripMenuShow .2s;
+    animation: MyTripMenuShow .2s;
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+.com-header .my-trip .my-trip-dropdown ul {
+    width: 151px;
+    position: absolute;
+    border: 1px solid #ddd;
+    background: #fff;
+    top: 0px;
+    left: -1px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    z-index: 10;
+    zoom: 1;
+    font-size: 12px;
+}
+
+.com-header .my-trip .my-trip-dropdown ul li {
+    height: 28px;
+    line-height: 28px;
+    text-indent: 10px;
+}
+.com-header .my-trip .my-trip-dropdown ul li.title {
+    color: #999;
+    background: #f5f5f5;
+}
+.com-header .my-trip .my-trip-dropdown ul li a {
+    display: block;
+    width: 100%;
+    color: #333;
+}
+
+.com-header .my-trip .my-trip-dropdown ul li a:hover {
+    color: #f18d00;
+}
+
+.com-header .com-nav {
+    background: #fcb754;
+    height: 44px;
+}
+
+.com-header .com-nav .menu-list {
+    width: 1190px;
+    margin: 0 auto;
+}
+
+.com-header .com-nav .menu-list a {
+    float: left;
+    color: #fff;
+    font-size: 14px;
+    padding-top: 13px;
+    height: 31px;
+    position: relative;
+}
+
+.com-header .com-nav .menu-list a span {
+    padding: 0 21px;
+    border-left: 1px solid #e78f12;
+    line-height: 18px;
+    float: left;
+}
+
+.com-header .com-nav .menu-list a.first span {
+    border-left: 0;
+}
+
+.com-header .com-nav .menu-list a.on,
+.com-header .com-nav .menu-list a:hover {
+    border-bottom: 3px solid #e57c00;
+    height: 28px;
+    background: #f4a331;
+}
+
+.com-header .com-nav .menu-list a.on span,
+.com-header .com-nav .menu-list a:hover span {
+    border-left: 0;
+    padding-left: 22px;
+}
+
+.com-header .com-nav .menu-list a.first.on span,
+.com-header .com-nav .menu-list a.first:hover span {
+    padding-left: 21px;
+}
+
+.com-header .com-nav .menu-list a.on + a span,
+.com-header .com-nav .menu-list a:hover + a span{
+    border-left: 0;
+    padding-left: 22px;
+}
+
+
+@keyframes MyTripMenuHide {
+    0% {
+        transform: translateY(0);
+        opacity: 1
+    }
+
+    100% {
+        transform: translateY(-10px);
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes MyTripMenuHide {
+    0% {
+        -webkit-transform: translateY(0);
+        opacity: 1
+    }
+
+    100% {
+        -webkit-transform: translateY(-10px);
+        opacity: 0
+    }
+}
+
+@-moz-keyframes MyTripMenuHide {
+    0% {
+        -moz-transform: translateY(0);
+        opacity: 1
+    }
+
+    100% {
+        -moz-transform: translateY(-10px);
+        opacity: 0
+    }
+}
+
+@-ms-keyframes MyTripMenuHide {
+    0% {
+        -ms-transform: translateY(0);
+        opacity: 1
+    }
+
+    100% {
+        -ms-transform: translateY(-10px);
+        opacity: 0
+    }
+}
+
+@-o-keyframes MyTripMenuHide {
+    0% {
+        -o-transform: translateY(0);
+        opacity: 1
+    }
+
+    100% {
+        -o-transform: translateY(-10px);
+        opacity: 0
+    }
+}
+
+@keyframes MyTripMenuShow {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes MyTripMenuShow {
+    0% {
+        -webkit-transform: translateY(-10px);
+        opacity: 0
+    }
+
+    100% {
+        -webkit-transform: translateY(0);
+        opacity: 1
+    }
+}
+
+@-ms-keyframes MyTripMenuShow {
+    0% {
+        -ms-transform: translateY(-10px);
+        opacity: 0
+    }
+
+    100% {
+        -ms-transform: translateY(0);
+        opacity: 1
+    }
+}
+
+@-moz-keyframes MyTripMenuShow {
+    0% {
+        -moz-transform: translateY(-10px);
+        opacity: 0
+    }
+
+    100% {
+        -moz-transform: translateY(0);
+        opacity: 1
+    }
+}
+
+@-o-keyframes MyTripMenuShow {
+    0% {
+        -o-transform: translateY(-10px);
+        opacity: 0
+    }
+
+    100% {
+        -o-transform: translateY(0);
+        opacity: 1
+    }
+}
+
+.com-header .com-nav .menu-list .menu-pop {
+    position: absolute;
+    width: 34px;
+    height: 16px;
+    line-height: 14px;
+    background: #FF5555;
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.10);
+    border-radius: 2px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    top: -12px;
+    right: -4px;
+}
+.com-header .com-nav .menu-list .menu-pop i {
+    content: '';
+    width: 0;
+    height: 0;
+    border-right: 3px solid transparent;
+    border-top: 3px solid #FF5555;
+    border-left: 3px solid transparent;
+    position: absolute;
+    top: 16px;
+    left: 4px;
+}
+
+.com-header .com-nav .menu-list .menu-tag {
+    width: 33px;
+    height: 33px;
+    background-image: url(../img/menu-tags.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.com-header .com-nav .menu-list .menu-tag.hot {
+    background-position: 0 0;
+}
+.com-header .com-nav .menu-list .menu-tag.new {
+    background-position: -33px 0;
+}

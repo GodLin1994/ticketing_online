@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxx.ticketing.dao.SaleFlightMapper">
+    <resultMap id="BaseMap" type="com.yxx.ticketing.model.SaleFlight">
+        <result column="oid" jdbcType="INTEGER" property="oid"/>
+        <result column="flight_id" jdbcType="INTEGER" property="flightId"/>
+        <result column="flight_num" jdbcType="VARCHAR" property="flightNum"/>
+        <result column="flight_start_time" jdbcType="TIMESTAMP" property="flightStartTime"/>
+        <result column="flight_end_time" jdbcType="TIMESTAMP" property="flightEndTime"/>
+        <result column="flight_state" jdbcType="VARCHAR" property="flightState"/>
+        <result column="flight_mileage" jdbcType="DOUBLE" property="flightMileage"/>
+        <result column="plane_model" jdbcType="VARCHAR" property="planeModel"/>
+        <result column="airline_name" jdbcType="VARCHAR" property="airlineName"/>
+        <result column="airline_shorthand" jdbcType="VARCHAR" property="airlineShorthand"/>
+        <result column="start_city_name" jdbcType="VARCHAR" property="startCityName"/>
+        <result column="start_airport_name" jdbcType="VARCHAR" property="startAirportName"/>
+        <result column="end_city_name" jdbcType="VARCHAR" property="endCityName"/>
+        <result column="end_airport_name" jdbcType="VARCHAR" property="endAirportName"/>
+        <collection property="saleOppos" column="{oid=oid,fid=flight_id}"
+                    select="com.yxx.ticketing.dao.SaleOppoMapper.getAllOpposByOidAndFid"
+        ></collection>
+    </resultMap>
+
+    <select id="getFlights" resultMap="BaseMap" >
+        select * from v_order_flights where oid= #{id}
+        GROUP BY flight_id
+    </select>
+</mapper>

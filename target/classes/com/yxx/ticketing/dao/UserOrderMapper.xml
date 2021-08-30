@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxx.ticketing.dao.UserOrderMapper">
+    <resultMap id="myBaseMap" type="com.yxx.ticketing.model.UserOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="num" jdbcType="VARCHAR" property="num"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="cTime" jdbcType="TIMESTAMP" property="cTime"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="cPhone" jdbcType="VARCHAR" property="cPhone"/>
+        <result column="tPrice" jdbcType="VARCHAR" property="tPrice"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <collection property="saleFlights" column="{id=id}"
+                    select="com.yxx.ticketing.dao.SaleFlightMapper.getFlights"/>
+    </resultMap>
+    <resultMap id="myBaseMapNOAssociation" type="com.yxx.ticketing.model.UserOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="num" jdbcType="VARCHAR" property="num"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="cTime" jdbcType="TIMESTAMP" property="cTime"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="cPhone" jdbcType="VARCHAR" property="cPhone"/>
+        <result column="tPrice" jdbcType="VARCHAR" property="tPrice"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, num, state, cTime, contact, cPhone, tPrice, user_id
+    </sql>
+    <select id="getALLOrderByUserId" resultMap="myBaseMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_order o where o.user_id = #{user.id}
+        <trim>
+            <if test="order.contact != null and order.contact != &quot;&quot;">
+                and o.contact like #{order.contact}
+            </if>
+            <if test="order.state != null and order.state != &quot;&quot;">
+                and o.state like #{order.state}
+            </if>
+            <if test="order.cPhone != null and order.cPhone != &quot;&quot;">
+                and o.cPhone like #{order.cPhone}
+            </if>
+            <if test="order.cStart != null and order.cStart != &quot;&quot;">
+                and o.cTime &gt;= DATE_FORMAT(#{order.cStart},'%y-%m-%d')
+            </if>
+            <if test="order.cEnd != null and order.cEnd != &quot;&quot;">
+                and o.cTime &lt;= DATE_FORMAT(#{order.cEnd},'%y-%m-%d')
+            </if>
+        </trim>
+        order by cTime desc
+    </select>
+
+    <select id="getOneOrderByOid" resultMap="myBaseMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_order o where o.id = #{oid}
+    </select>
+
+    <select id="getUserByOid" resultMap="myBaseMapNOAssociation">
+        select
+        <include refid="Base_Column_List"></include>
+        from t_order o where o.id = #{oid}
+    </select>
+
+    <update id="updateOrderState">
+        update t_order
+        <set>
+            state =#{state}
+        </set>
+        where id = #{oid}
+    </update>
+
+    <update id="pay_updateOrderState">
+        update t_order
+            set state = '已付款'
+        where num=#{num}
+    </update>
+
+    <select id="getCountFlightsByOid" resultType="int" >
+        SELECT
+        COUNT(*)
+        FROM
+        (SELECT
+        *
+        FROM
+        v_fare
+        WHERE
+        order_id=#{oid}
+        GROUP BY
+        flight_id) t1
+    </select>
+</mapper>

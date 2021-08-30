@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!-- 配置加载类路径的配置文件 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath*:applicationContext.xml
+        </param-value>
+    </context-param>
+
+
+    <!-- 配置监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- 配置监听器，监听request域对象的创建和销毁的 -->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+
+    <!-- 配置前端控制器（加载classpath:spring-mvc.xml 服务器启动创建servlet） -->
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+        <!-- 配置全局异常统一响应处理器,DispatcherServlet源码中对于throwExceptionIfNoHandlerFound 默认是 false -->
+        <!--<init-param>-->
+            <!--<param-name>throwExceptionIfNoHandlerFound</param-name>-->
+            <!--<param-value>true</param-value>-->
+        <!--</init-param>-->
+
+        <!-- 配置初始化参数，创建完DispatcherServlet对象，加载springmvc.xml配置文件 -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+        <!-- 服务器启动的时候，让DispatcherServlet对象创建 -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 解决中文乱码过滤器 -->
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--
+        将post请求转换成delete或put请求
+        HiddenHttpMethodFilter可以将post请求转化为put和delete请求！
+        其工作原理是在发送请求时拦截请求，获取一个名为“_method”代表的是请求方式的参数，
+        如果检测到请求方式是post，然后再检测表单是否有代表（）的隐藏域的参数，
+        然后再将其转化为put或者delete
+    -->
+    <!--<filter>-->
+    <!--<filter-name>HiddenHttpMethodFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+    <!--<filter-name>HiddenHttpMethodFilter</filter-name>-->
+    <!--&lt;!&ndash;过滤所有请求！&ndash;&gt;-->
+    <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+
+    <!--配置ERROR页面-->
+    <!--<error-page>-->
+        <!--<error-code>405</error-code>-->
+        <!--<location>/405.jsp</location>-->
+    <!--</error-page>-->
+    <!--<error-page>-->
+        <!--<error-code>404</error-code>-->
+        <!--<location>/404.jsp</location>-->
+    <!--</error-page>-->
+
+    <!--默认访问视图-->
+
+</web-app>

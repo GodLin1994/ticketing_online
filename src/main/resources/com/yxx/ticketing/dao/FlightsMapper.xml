@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxx.ticketing.dao.FlightsMapper">
+    <!--开启本mapper的namespace下的二级缓存-->
+    <!--
+        eviction:代表的是缓存回收策略，目前MyBatis提供以下策略。
+        (1) LRU,最近最少使用的，一处最长时间不用的对象
+        (2) FIFO,先进先出，按对象进入缓存的顺序来移除他们
+        (3) SOFT,软引用，移除基于垃圾回收器状态和软引用规则的对象
+        (4) WEAK,弱引用，更积极的移除基于垃圾收集器状态和弱引用规则的对象。这里采用的是LRU，
+                移除最长时间不用的对形象
+
+        flushInterval:刷新间隔时间，单位为毫秒，这里配置的是100秒刷新，如果你不配置它，那么当
+        SQL被执行的时候才会去刷新缓存。
+
+        size:引用数目，一个正整数，代表缓存最多可以存储多少个对象，不宜设置过大。设置过大会导致内存溢出。
+        这里配置的是1024个对象
+
+        readOnly:只读，意味着缓存数据只能读取而不能修改，这样设置的好处是我们可以快速读取缓存，缺点是我们没有
+        办法修改缓存，他的默认值是false，不允许我们修改
+    -->
+    <cache eviction="LRU" flushInterval="60" readOnly="true" size="1024"/>
+    <resultMap id="BaseResultMap" type="com.yxx.ticketing.model.Flights">
+        <result column="flight_id" jdbcType="INTEGER" property="flightId"/>
+        <result column="flight_num" jdbcType="VARCHAR" property="flightNum"/>
+        <result column="flight_start_time" jdbcType="TIMESTAMP" property="flightStartTime"/>
+        <result column="flight_end_time" jdbcType="TIMESTAMP" property="flightEndTime"/>
+        <result column="flight_state" jdbcType="VARCHAR" property="flightState"/>
+        <result column="flight_mileage" jdbcType="DOUBLE" property="flightMileage"/>
+        <result column="plane_model" jdbcType="VARCHAR" property="planeModel"/>
+        <result column="airline_name" jdbcType="VARCHAR" property="airlineName"/>
+        <result column="airline_shorthand" jdbcType="VARCHAR" property="airlineShorthand"/>
+        <result column="start_city_name" jdbcType="VARCHAR" property="startCityName"/>
+        <result column="start_airport_name" jdbcType="VARCHAR" property="startAirportName"/>
+        <result column="end_city_name" jdbcType="VARCHAR" property="endCityName"/>
+        <result column="end_airport_name" jdbcType="VARCHAR" property="endAirportName"/>
+        <association property="fareNum" column="flight_id"
+                     select="com.yxx.ticketing.dao.FareNumMapper.selectByFlightId">
+        </association>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    flight_id, flight_num, flight_start_time, flight_end_time, flight_state, flight_mileage,
+    plane_model, airline_name, airline_shorthand, start_city_name, start_airport_name, 
+    end_city_name, end_airport_name
+  </sql>
+    <select id="selectByExample" parameterType="com.yxx.ticketing.model.FlightsExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from v_flights
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="com.yxx.ticketing.model.FlightsExample">
+        delete from v_flights
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.yxx.ticketing.model.Flights">
+    insert into v_flights (flight_id, flight_num, flight_start_time, 
+      flight_end_time, flight_state, flight_mileage, 
+      plane_model, airline_name, airline_shorthand, 
+      start_city_name, start_airport_name, end_city_name, 
+      end_airport_name)
+    values (#{flightId,jdbcType=INTEGER}, #{flightNum,jdbcType=VARCHAR}, #{flightStartTime,jdbcType=TIMESTAMP}, 
+      #{flightEndTime,jdbcType=TIMESTAMP}, #{flightState,jdbcType=VARCHAR}, #{flightMileage,jdbcType=DOUBLE}, 
+      #{planeModel,jdbcType=VARCHAR}, #{airlineName,jdbcType=VARCHAR}, #{airlineShorthand,jdbcType=VARCHAR}, 
+      #{startCityName,jdbcType=VARCHAR}, #{startAirportName,jdbcType=VARCHAR}, #{endCityName,jdbcType=VARCHAR}, 
+      #{endAirportName,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yxx.ticketing.model.Flights">
+        insert into v_flights
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="flightId != null">
+                flight_id,
+            </if>
+            <if test="flightNum != null">
+                flight_num,
+            </if>
+            <if test="flightStartTime != null">
+                flight_start_time,
+            </if>
+            <if test="flightEndTime != null">
+                flight_end_time,
+            </if>
+            <if test="flightState != null">
+                flight_state,
+            </if>
+            <if test="flightMileage != null">
+                flight_mileage,
+            </if>
+            <if test="planeModel != null">
+                plane_model,
+            </if>
+            <if test="airlineName != null">
+                airline_name,
+            </if>
+            <if test="airlineShorthand != null">
+                airline_shorthand,
+            </if>
+            <if test="startCityName != null">
+                start_city_name,
+            </if>
+            <if test="startAirportName != null">
+                start_airport_name,
+            </if>
+            <if test="endCityName != null">
+                end_city_name,
+            </if>
+            <if test="endAirportName != null">
+                end_airport_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="flightId != null">
+                #{flightId,jdbcType=INTEGER},
+            </if>
+            <if test="flightNum != null">
+                #{flightNum,jdbcType=VARCHAR},
+            </if>
+            <if test="flightStartTime != null">
+                #{flightStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flightEndTime != null">
+                #{flightEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flightState != null">
+                #{flightState,jdbcType=VARCHAR},
+            </if>
+            <if test="flightMileage != null">
+                #{flightMileage,jdbcType=DOUBLE},
+            </if>
+            <if test="planeModel != null">
+                #{planeModel,jdbcType=VARCHAR},
+            </if>
+            <if test="airlineName != null">
+                #{airlineName,jdbcType=VARCHAR},
+            </if>
+            <if test="airlineShorthand != null">
+                #{airlineShorthand,jdbcType=VARCHAR},
+            </if>
+            <if test="startCityName != null">
+                #{startCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="startAirportName != null">
+                #{startAirportName,jdbcType=VARCHAR},
+            </if>
+            <if test="endCityName != null">
+                #{endCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="endAirportName != null">
+                #{endAirportName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.yxx.ticketing.model.FlightsExample" resultType="java.lang.Long">
+        select count(*) from v_flights
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update v_flights
+        <set>
+            <if test="record.flightId != null">
+                flight_id = #{record.flightId,jdbcType=INTEGER},
+            </if>
+            <if test="record.flightNum != null">
+                flight_num = #{record.flightNum,jdbcType=VARCHAR},
+            </if>
+            <if test="record.flightStartTime != null">
+                flight_start_time = #{record.flightStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.flightEndTime != null">
+                flight_end_time = #{record.flightEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.flightState != null">
+                flight_state = #{record.flightState,jdbcType=VARCHAR},
+            </if>
+            <if test="record.flightMileage != null">
+                flight_mileage = #{record.flightMileage,jdbcType=DOUBLE},
+            </if>
+            <if test="record.planeModel != null">
+                plane_model = #{record.planeModel,jdbcType=VARCHAR},
+            </if>
+            <if test="record.airlineName != null">
+                airline_name = #{record.airlineName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.airlineShorthand != null">
+                airline_shorthand = #{record.airlineShorthand,jdbcType=VARCHAR},
+            </if>
+            <if test="record.startCityName != null">
+                start_city_name = #{record.startCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.startAirportName != null">
+                start_airport_name = #{record.startAirportName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.endCityName != null">
+                end_city_name = #{record.endCityName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.endAirportName != null">
+                end_airport_name = #{record.endAirportName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update v_flights
+        set flight_id = #{record.flightId,jdbcType=INTEGER},
+        flight_num = #{record.flightNum,jdbcType=VARCHAR},
+        flight_start_time = #{record.flightStartTime,jdbcType=TIMESTAMP},
+        flight_end_time = #{record.flightEndTime,jdbcType=TIMESTAMP},
+        flight_state = #{record.flightState,jdbcType=VARCHAR},
+        flight_mileage = #{record.flightMileage,jdbcType=DOUBLE},
+        plane_model = #{record.planeModel,jdbcType=VARCHAR},
+        airline_name = #{record.airlineName,jdbcType=VARCHAR},
+        airline_shorthand = #{record.airlineShorthand,jdbcType=VARCHAR},
+        start_city_name = #{record.startCityName,jdbcType=VARCHAR},
+        start_airport_name = #{record.startAirportName,jdbcType=VARCHAR},
+        end_city_name = #{record.endCityName,jdbcType=VARCHAR},
+        end_airport_name = #{record.endAirportName,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+
+
+</mapper>

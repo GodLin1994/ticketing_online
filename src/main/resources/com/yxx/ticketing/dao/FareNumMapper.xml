@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxx.ticketing.dao.FareNumMapper">
+
+    <select id="selectByFlightId" parameterType="int" resultType="com.yxx.ticketing.model.FareNum">
+          SELECT *
+          FROM
+          (SELECT
+          COUNT(*) AS firstNum,
+          af.`price` AS firstPrice
+          FROM t_airfare af
+          LEFT JOIN t_seat s
+          ON s.`id`=af.`seat_id`
+          WHERE af.`flight_id`=#{id}
+          AND af.`state`='未出售'
+          AND s.`lv`='头等舱') s1,
+          (SELECT
+          COUNT(*) AS businessNum,
+          af.`price` AS businessPrice
+          FROM t_airfare af
+          LEFT JOIN t_seat s
+          ON s.`id`=af.`seat_id`
+          WHERE af.`flight_id`=#{id}
+          AND af.`state`='未出售'
+          AND s.`lv`='商务舱') s2,
+          (SELECT
+          COUNT(*) AS economyNum,
+          af.`price` AS economyPrice
+          FROM t_airfare af
+          LEFT JOIN t_seat s
+          ON s.`id`=af.`seat_id`
+          WHERE af.`flight_id`=#{id}
+          AND af.`state`='未出售'
+          AND s.`lv`='经济舱') s3;
+    </select>
+</mapper>

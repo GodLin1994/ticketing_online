@@ -1,0 +1,26 @@
+
+
+.price{
+    font-weight: 700;
+    color: #e56700;
+    font-style: normal;
+    font-family: arial;
+    text-decoration: none;
+}
+.startbox {
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.startcity {
+    float: left;
+    font-size: 12px;
+    color: #666;
+}
+
+.startcity span {
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+}
+

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<!-- IE 浏览器运行最新的渲染模式-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- 启用响应式特性 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 双核使用webkit内核 -->
+<meta name="renderer" content="webkit">
+<title>订单列表</title>
+<link href="../../../css/bootstrap.min.css" rel="stylesheet">
+<link href="../../../css/common.css" rel="stylesheet">
+<link href="../../../css/corptravel.css" rel="stylesheet">
+<link href="../../../css/enterprise.css" rel="stylesheet">
+
+
+
+<style>
+.tabs { width:35px; padding:3px; ; background-color:#db514f; color:#fff; text-align:center; margin-top:2px; margin-bottom:2px; border-radius:3px; }
+.startbox { overflow:hidden; margin-bottom:5px; }
+.start { float:left; background-color:#f9a60a; padding:2px; color:#fff; border-radius:2px; margin-right:5px; }
+.destination { float:left; background-color:#0096de; padding:2px; color:#fff; border-radius:2px; margin-right:5px; }
+.startcity { float:left; font-size:12px; color:#666; }
+.startcity span { font-size:14px; color:#000; font-weight:bold; }
+.destination1 {float:left; background-color:#0096de; padding:2px; color:#fff; border-radius:2px; margin-right:5px; }
+.destination2 {float:left; background-color:#0096de; padding:2px; color:#fff; border-radius:2px; margin-right:5px; }
+</style>
+</head>
+<body class="bg-body">
+
+<!-- header end -->
+<!-- 管理模板 -->
+<div class="container bg-gray-eee box-shadow mar-bottom-30" style="padding-right:0px; padding-left:0px; position:relative; margin-top:120px;">
+
+  <!-- main -->
+  <div class="rightCon" style="">
+    <!-- 引导 -->
+    <ol class="breadcrumb">
+      <li>首页</li>
+      <li>订单管理</li>
+      <li class="active">订单列表</li>
+    </ol>
+    <!-- 引导结束 -->
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group" >
+          <label for="apdiv" class="w90 text-right">预定时间</label>
+          <input type="text" class="form-control input-sm" style=" width:90px; display:inline-block;" id="" placeholder="日期">
+          &nbsp;至&nbsp;
+          <input type="text" class="form-control input-sm" style=" width:90px; display:inline-block;" id="" placeholder="日期">
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group"  >
+          <label for="apdiv" class="w90 text-right">票号</label>
+          <input type="text" class="form-control input-sm" style=" width:200px; display:inline-block;" id="" placeholder="number">
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="apdiv" class="w90 text-right">航班号</label>
+          <input type="text" class="form-control input-sm" style=" width:200px; display:inline-block;" id="" placeholder="number">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="apdiv2" class="w90 text-right">起飞日期</label>
+          <input type="text" class="form-control input-sm" style=" width:90px; display:inline-block;" id="input" placeholder="日期">
+          &nbsp;至&nbsp;
+          <input type="text" class="form-control input-sm" style=" width:90px; display:inline-block;" id="input" placeholder="日期">
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="apdiv" class="w90 text-right">订单编号</label>
+          <input type="text" class="form-control input-sm" style=" width:200px; display:inline-block;" id="" placeholder="number">
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="apdiv" class="w90 text-right">订单状态</label>
+          <select name="select" class="form-control input-sm" style=" width:200px; display:inline-block;">
+            <option value="1-1">全部</option>
+            <option value="1-1">新订单</option>
+            <option value="1-2">已经支付等待出票</option>
+            <option value="1-3">已经出票交易结束</option>
+            <option value="1-4">未出票已退款</option>
+            <option value="1-5">已取消</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="apdiv" class="w90 text-right">起降城市</label>
+          <input type="text" class="form-control input-sm" style=" width:90px; display:inline-block;" id="" placeholder="城市">
+          &nbsp;至&nbsp;
+          <input type="text" class="form-control input-sm" style=" width:90px; display:inline-block;" id="" placeholder="城市">
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="apdiv" class="w90 text-right">乘机人</label>
+          <input type="text" class="form-control input-sm" style=" width:200px; display:inline-block;" id="" placeholder="姓名">
+        </div>
+      </div>
+      
+    </div>
+    <!--<div class="form-group">
+          <label class="sr-only" for="apdiv">联系人</label>
+          <input type="text" class="form-control" style=" width:100px;" id="" placeholder="联系人姓名">
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="apdiv">联系电话</label>
+          <input type="text" class="form-control" style=" width:120px;" id="" placeholder="联系电话">
+        </div>-->
+    <div class="text-center mar-top-10 bor-top-solid-1 pad-top-10 mar-bottom-10">
+      <button type="submit" class="btn btn-danger btn-sm mar-right-20">查询</button>
+      <button type="submit" class="btn btn-default btn-sm mar-right-20">清空条件</button>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-hover table-striped font12 table-bordered v-align-top" >
+      <tr >
+        <th>创建时间</th>
+        <th>乘机人</th>
+        <th>航班号</th>
+        <th>舱位</th>
+        <th>起飞行程</th>
+        <th>到达行程</th>
+        <th>结算总价</th>
+        <th style="width:65px;">订单状态</th>
+        <th>操作</th>
+      </tr>
+      <tr>
+        <td>2016-01-14
+          <br>09:20</td>
+        <td><p>荣思佳</p>
+          <p>李冬阳</p></td>
+        <td>3U8825</td>
+        <td>经济舱</td>
+        <td><div class="startbox">
+           
+            <div class="startcity"><span>三亚</span> 凤凰国际机场<br/>
+              2015-12-20&nbsp;&nbsp;11:45:00</div>
+          </div></td>
+        <td><div class="startbox">
+          
+          <div class="startcity"><span>哈尔滨</span> 太平国际机场<br/>
+            2015-12-20&nbsp;&nbsp;14:45:00</div>
+        </div></td>
+        <td>1350.00</td>
+        <td>新订单</td>
+        <td><a href="订单详情.html">【查看详情】</a><br>
+          <a href="#" class="quxiao">【取消订单】</a><br>
+          <a href="../在线预订/支付.html" target="_blank" >【立即支付】</a></td>
+      </tr>
+      <tr>
+        <td>2016-01-14 <br>
+          09:20</td>
+        <td><p>荣思佳</p>
+          <p>李冬阳</p></td>
+        <td>3U8825</td>
+        <td>超值头等舱</td>
+        <td><div class="startbox">
+           
+            <div class="startcity"><span>三亚</span> 凤凰国际机场<br/>
+              2015-12-20&nbsp;&nbsp;11:45:00</div>
+          </div></td>
+        <td><div class="startbox">
+         
+          <div class="startcity"><span>哈尔滨</span> 太平国际机场<br/>
+            2015-12-20&nbsp;&nbsp;14:45:00</div>
+        </div></td>
+        <td>1350.00</td>
+        <td>已出票</td>
+        <td><a href="订单详情.html">【查看详情】</a><br>
+          <!--<a href="#" class="tuipiao">【申请退票】</a><br>
+          <a href="#" class="qiye09">【申请改签】</a></td>-->
+      </tr>
+    </table>
+    <nav class="pull-right " >
+      <ul class="pagination pagination-sm" style=" margin-top:0px;">
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">...</a></li>
+        <li><a href="#">5</a></li>
+        <li> <a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+      </ul>
+      <div class="clearfix"></div>
+    </nav>
+    <div class="clearfix"></div>
+  </div>
+</div>
+<!-- main end -->
+</div>
+<!-- 管理模板 结束 -->
+
+
+
+<!-- 退票弹框 -->
+<div id="rev" style="display:none">
+  <div class="modal-body" >
+    <div class="pad-10">
+    <h4>行程信息</h4>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered mar-bottom-10">
+  <tr class=" bg-gray-f5">
+    <th><input name="" type="checkbox" value=""></th>
+    <th>航班号</th>
+    <th>起飞时间</th>
+    <th>到达时间</th>
+    <th>行程</th>
+  </tr>
+  <tr>
+    <td><input name="" type="checkbox" value=""></td>
+    <td>CA8954</td>
+    <td>2014-10-18 7:50:00</td>
+    <td>2014-10-18 12:25:00</td>
+    <td>成都双流 - 上海浦东</td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered mar-bottom-10">
+  <tr class=" bg-gray-f5">
+    <th><input name="" type="checkbox" value=""></th>
+    <th>姓名</th>
+    <th>乘客类型</th>
+    <th>证件类型</th>
+    <th>证件号码</th>
+    <th>机建/燃油</th>
+    <th>企业结算价</th>
+  </tr>
+  <tr>
+    <td><input name="" type="checkbox" value=""></td>
+    <td>荣思佳</td>
+    <td>成人</td>
+    <td>身份证</td>
+    <td>510301198808081018</td>
+    <td>￥100/￥280</td>
+    <td>￥1440</td>
+  </tr>
+  <tr>
+    <td><input name="" type="checkbox" value=""></td>
+    <td>李冬阳</td>
+    <td>成人</td>
+    <td>身份证</td>
+    <td>510301198808081018</td>
+    <td>￥100/￥280</td>
+    <td>￥1440</td>
+  </tr>
+</table>
+  <form class="form-horizontal">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-3 control-label">退票原因</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" id="inputEmail3" placeholder="请输入退票理由">
+    </div>
+  </div>
+</form>
+
+    </div>
+  </div>
+  <div class="modal-footer mar-top-5">
+    <button type="button" class="btn btn-primary" onClick="layer.closeAll()">申请退票</button>
+    </a>
+<button type="button" class="btn btn-default"  onClick="layer.closeAll()" >关闭</button>
+  </div>
+</div>
+
+<!-- 申请改签弹框 -->
+<div id="gaiqian" style="display:none">
+  <div class="modal-body" >
+    <form class="form-horizontal">
+      <div class="form-group">
+        <label for="" class="col-sm-4 control-label">改签乘机人：</label>
+        <div class="col-sm-6">
+          <label class="checkbox-inline" style=" margin-left:10px;">
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> 孙靖
+          </label>
+           <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> 尚丁明
+          </label>
+           <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> 胡家富
+          </label>
+           <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> 刘述军
+          </label>
+           <label class="checkbox-inline">
+            <input type="checkbox" id="inlineCheckbox1" value="option1"> 王博玉
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-4 control-label">期望日期：</label>
+        <div class="col-sm-6">
+           <input type="text" class="form-control" id="" placeholder="请选择日期" onClick="WdatePicker()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-4 control-label">期望时间：</label>
+        <div class="col-sm-6">
+          <select name="select" class="form-control " >
+            <option value="">不限</option>
+            <option value="">上午</option>
+            <option value="">中午</option>
+            <option value="">下午</option>
+            <option value="">晚上</option>
+            <option value="">凌晨</option>
+          </select>
+
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-4 control-label">期望航司：</label>
+        <div class="col-sm-6">
+          <select name="select" class="form-control " >
+            <option value="">不限</option>
+            <option value="">中国航空</option>
+            <option value="">南方航空</option>
+            <option value="">四川航空</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-4 control-label">期望仓位：</label>
+        <div class="col-sm-6">
+          <select name="select" class="form-control " >
+            <option value="">不限</option>
+            <option value="">经济舱</option>
+            <option value="">头等舱</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-4 control-label">备注说明：</label>
+        <div class="col-sm-6">
+           <input type="text" class="form-control" id="" placeholder="限255字" >
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" onClick="submittip()">确 定</button>
+    <button type="button" class="btn btn-default"  onClick="layer.closeAll()">关 闭</button>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+
+	$(".quxiao").click(function(){  //取消订单
+	   layer.confirm('您确定要取消该订单？', {
+	   title :'取消订单',
+       btn: ['确定','取消'] //按钮
+       }, function(){
+       layer.msg('该订单已取消', {icon: 1});
+       });
+	});
+
+	$(".tuipiao").click(function(){  //申请退票
+	  layer.open({
+	  type: 1,
+	  title: '申请退票',
+      area: ['auto', 'auto'],
+      fix: false, //不固定
+      maxmin: false,
+      content: $('#rev'),
+      });
+	});
+
+	$(".qiye09").click(function(){  //申请改签
+	   layer.open({
+       type: 1,
+       shift: 2,  //出场动画
+       area: ['500px', 'auto'],
+	   title :'申请改签',
+       shadeClose: true, //开启遮罩关闭
+       content: $('#gaiqian'),
+       });
+	});
+
+});
+</script>
+</body>
+</html>
